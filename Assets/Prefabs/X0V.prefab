@@ -145,7 +145,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
+  m_LinearDrag: 3.5
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 4eaf6265920357c4a8ce43bd00121f47, type: 2}
@@ -166,14 +166,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 4054460444907152137}
-  m_MaxSpeed: 850
-  m_Acceleration: 10
-  m_JumpForce: 15
+  m_DeadZone: 0.1
+  m_MinVelocity: 5
+  m_MaxSpeed: 8
+  m_Acceleration: 700
+  m_MaxAcceleration: 50
+  m_Deceleration: 870
+  m_JumpForce: 23
   m_GroundTouchRadius: 0.35
   m_Feet: {fileID: 987270754}
   m_GroundLayer:
     serializedVersion: 2
     m_Bits: 512
+  m_DashStrength: 27
+  m_DashDuration: 0.5
+  m_FlipTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 684705063}
+        m_MethodName: Flip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FlipTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &4054460444907152139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,8 +208,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 4054460444907152137}
-  m_UpForce: 2
-  m_DownForce: 3
+  m_UpForce: 4
+  m_DownForce: 6
   m_VelocityThreshold: 0.1
 --- !u!1 &4054460445217623704
 GameObject:
@@ -234,7 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c38f576d818d284f8f97e7fa70b7bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AimSpeed: 10
+  m_MouseAimSpeed: 15
+  m_ControllerAimSpeed: 450
   m_AngleMin: -90
   m_AngleMax: 90
 --- !u!1 &4054460445303024650
