@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PivotAim : MonoBehaviour
@@ -9,37 +8,45 @@ public class PivotAim : MonoBehaviour
     [SerializeField] [Range(-180.0f, 180.0f)] float m_AngleMin =  -90.0f;
     [SerializeField] [Range(-180.0f, 180.0f)] float m_AngleMax = 90.0f;
     [SerializeField] [Range(0.0f, 1.0f)] float m_DeadZone = 0.01f;
+    [SerializeField] AnimationCurve m_KickCurve = null;
+    [SerializeField] bool m_PlayerDriven = true;
+
+    public Vector2 Target { get; set; }
 
     Camera m_Camera;
+    Vector2 m_StartingAngles;
     float m_Angle;
+    float m_AngleOffset;
 
     private void Start()
     {
         m_Camera = Camera.main;
+        m_StartingAngles.x = m_AngleMin;
+        m_StartingAngles.y = m_AngleMax;
     }
 
     void Update()
     {
-        if (MouseActive.Instance.Active)
+        if (m_PlayerDriven)
         {
-            UseMousePosition();
+            if (MouseActive.Instance.Active)
+            {
+                UseMousePosition();
+            }
+            else if (Input.GetJoystickNames().Length > 0)
+            {
+                UseControllerInput();
+            }
         }
-        else if (Input.GetJoystickNames().Length > 0)
+        else
         {
-            UseControllerInput();
+            SetRotationFromPoint(Target);
         }
     }
 
     void UseMousePosition()
     {
-        Vector2 mousePos = m_Camera.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 dir = mousePos - (Vector2)transform.position;
-
-        float sign = Mathf.Sign(transform.lossyScale.x);
-        float angle = Mathf.Rad2Deg * Mathf.Atan2(dir.y * sign, dir.x * sign);
-        m_Angle = Mathf.Lerp(m_Angle, angle, Time.deltaTime * m_MouseAimSpeed);
-
-        SetRotationFromAngle();
+        SetRotationFromPoint(m_Camera.ScreenToWorldPoint(Input.mousePosition));
     }
 
     void UseControllerInput()
@@ -50,14 +57,57 @@ public class PivotAim : MonoBehaviour
         SetRotationFromAngle();
     }
 
+    void SetRotationFromPoint(Vector2 point)
+    {
+        Vector2 dir = point - (Vector2)transform.position;
+
+        float sign = Mathf.Sign(transform.lossyScale.x);
+        float angle = Mathf.Rad2Deg * Mathf.Atan2(dir.y * sign, dir.x * sign);
+        m_Angle = Mathf.Lerp(m_Angle, angle, Time.deltaTime * m_MouseAimSpeed);
+
+        SetRotationFromAngle();
+    }
+
     void SetRotationFromAngle()
     {
         m_Angle = Mathf.Clamp(m_Angle, m_AngleMin, m_AngleMax);
-        transform.rotation = Quaternion.Euler(Vector3.forward * m_Angle);
+        float offset = m_AngleOffset * Mathf.Sign(transform.lossyScale.x);
+        transform.rotation = Quaternion.Euler(Vector3.forward * (m_Angle + offset));
+    }
+
+    public void Kick(float strength, float duration)
+    {
+        StopAllCoroutines();
+        m_Angle += m_AngleOffset * Mathf.Sign(transform.lossyScale.x); // Take this out to remove persistent recoil
+        StartCoroutine(Offset(strength, duration));
+    }
+
+    IEnumerator Offset(float amount, float time)
+    {
+        for (float i = 0.0f; i < time; i += Time.deltaTime)
+        {
+            float t = i / time;
+            float strength = m_KickCurve.Evaluate(t) * amount;
+            m_AngleOffset = strength;
+            yield return null;
+        }
+        m_AngleOffset = 0.0f;
     }
 
     public void Flip()
     {
         m_Angle *= -1.0f;
+    }
+
+    public void SetAngles(float min, float max)
+    {
+        m_AngleMin = min;
+        m_AngleMax = max;
+    }
+
+    public void RevertAngles()
+    {
+        m_AngleMin = m_StartingAngles.x;
+        m_AngleMax = m_StartingAngles.y;
     }
 }

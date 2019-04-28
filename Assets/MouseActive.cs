@@ -14,6 +14,12 @@ public class MouseActive : Singleton<MouseActive>
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        {
+            m_CheckTime = 0.0f;
+            Active = true;
+        }
+
         m_CheckTime += Time.deltaTime;
         if (m_CheckTime >= m_CheckRate)
         {

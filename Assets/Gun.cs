@@ -8,6 +8,15 @@ public class Gun : MonoBehaviour
     [SerializeField] Transform m_Barrel = null;
     [SerializeField] [Range(0, 100)] int m_PoolSize = 20;
     [SerializeField] [Range(0.0f, 100.0f)] float m_LaunchSpeed = 20.0f;
+    [SerializeField] [Range(0.0f, 5.0f)] float m_FireRate = 0.5f;
+    [Tooltip("How far the gun kicks up")]
+    [SerializeField] [Range(0.0f, 100.0f)] float m_Kick = 10.0f;
+    [Tooltip("The time it takes to go back to rest")]
+    [SerializeField] [Range(0.0f, 10.0f)] float m_Recoil = 0.1f;
+
+    public float Kick { get { return m_Kick; } }
+    public float Recoil { get { return m_Recoil; } }
+    public float FireRate { get { return m_FireRate; } }
 
     GameObject[] m_BulletPool;
 

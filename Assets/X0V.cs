@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
@@ -6,8 +7,10 @@ public class FlipTrigger : UnityEvent { }
 
 public class X0V : Gunner
 {
+    [Space(10)]
     [Header("Variables")]
     [SerializeField] Rigidbody2D m_Rigidbody = null;
+    [SerializeField] PivotAim m_Shoulder = null;
     [SerializeField] [Range(0.0f, 1.0f)] float m_DeadZone = 0.1f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_MinVelocity = 5.0f;
     [Space(10)]
@@ -28,22 +31,32 @@ public class X0V : Gunner
     [SerializeField] [Range(0.0f, 5.0f)] float m_DashDuration = 0.7f;
     [Space(10)]
     [Header("Flip")]
-    [SerializeField] FlipTrigger m_FlipTrigger;
-
-    public bool OnGround { get; private set; }
+    [SerializeField] FlipTrigger m_FlipTrigger = null;
+    
     public bool Dashing { get { return m_DashTime < m_DashDuration; } }
 
+    List<Debuff> m_Debuffs;
     Vector2 m_Velocity;
     float m_FlipThreshold = 0.05f;
     float m_DashTime;
+    float m_StartingSpeed;
+    float m_StartingJump;
+    float m_StartingDash;
+    float m_FireTime;
 
     private void Start()
     {
+        m_Debuffs = new List<Debuff>();
         m_DashTime = m_DashDuration;
+        m_StartingSpeed = m_MaxSpeed;
+        m_StartingJump = m_JumpForce;
+        m_StartingDash = m_DashStrength;
     }
 
-    void Update()
+    new void Update()
     {
+        base.Update();
+
         float inX = Input.GetAxis("Horizontal");
 
         if (Mathf.Abs(inX) > m_FlipThreshold)
@@ -78,9 +91,13 @@ public class X0V : Gunner
             m_DashTime = 0.0f;
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        m_FireTime += Time.deltaTime;
+        m_FireTime = Mathf.Clamp(m_FireTime, 0.0f, m_Gun.FireRate);
+        if (m_FireTime >= m_Gun.FireRate && Input.GetButton("Fire1"))
         {
+            m_FireTime -= m_Gun.FireRate;
             m_Gun.Fire();
+            m_Shoulder.Kick(m_Gun.Kick, m_Gun.Recoil);
         }
     }
     
@@ -115,5 +132,65 @@ public class X0V : Gunner
         float x = m_Rigidbody.velocity.x * axisToKeep.x;
         float y = m_Rigidbody.velocity.y * axisToKeep.y;
         m_Rigidbody.velocity = new Vector2(x, y);
+    }
+
+    public void AddDebuff(Debuff debuff)
+    {
+        m_Debuffs.Add(debuff);
+
+        switch (debuff.Type)
+        {
+            case Modifier.ANGLE:
+                m_Shoulder.SetAngles(0, 0);
+                break;
+            case Modifier.JUMP:
+                m_JumpForce *= debuff.Value;
+                break;
+            case Modifier.SPEED:
+                m_MaxSpeed *= debuff.Value;
+                break;
+            case Modifier.DASH:
+                m_DashStrength *= debuff.Value;
+                break;
+        }
+
+        // TODO: Animation/Sound effect
+
+    }
+
+    public void ClearDebuffs()
+    {
+        foreach (Debuff debuff in m_Debuffs)
+        {
+            switch (debuff.Type)
+            {
+                case Modifier.ANGLE:
+                    m_Shoulder.RevertAngles();
+                    break;
+                case Modifier.JUMP:
+                    m_JumpForce = m_StartingJump;
+                    break;
+                case Modifier.SPEED:
+                    m_MaxSpeed = m_StartingSpeed;
+                    break;
+                case Modifier.DASH:
+                    m_DashStrength = m_StartingDash;
+                    break;
+            }
+        }
+
+        m_Debuffs.Clear();
+    }
+
+    public void RemoveDebuff(Modifier modifier)
+    {
+        foreach (Debuff debuff in m_Debuffs)
+        {
+            if (debuff.Type == modifier)
+            {
+                m_Debuffs.Remove(debuff);
+                break;
+            }
+        }
     }
 }
