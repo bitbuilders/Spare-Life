@@ -7,7 +7,6 @@ public class PivotAim : MonoBehaviour
     [SerializeField] [Range(0.0f, 720.0f)] float m_ControllerAimSpeed = 450.0f;
     [SerializeField] [Range(-180.0f, 180.0f)] float m_AngleMin =  -90.0f;
     [SerializeField] [Range(-180.0f, 180.0f)] float m_AngleMax = 90.0f;
-    [SerializeField] [Range(0.0f, 1.0f)] float m_DeadZone = 0.01f;
     [SerializeField] AnimationCurve m_KickCurve = null;
     [SerializeField] bool m_PlayerDriven = true;
 

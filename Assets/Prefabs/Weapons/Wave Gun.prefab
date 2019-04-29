@@ -50,11 +50,12 @@ MonoBehaviour:
   m_BulletTemplate: {fileID: 2540750697466604339, guid: ef9cf8787aa1ab44a89321d12a6f83ce,
     type: 3}
   m_Barrel: {fileID: 5268220088923573383}
-  m_PoolSize: 10
+  m_Evil: 0
+  m_PoolSize: 4
   m_LaunchSpeed: 10
-  m_FireRate: 1
+  m_FireRate: 1.75
   m_Kick: 15
-  m_Recoil: 0.15
+  m_Recoil: 0.25
 --- !u!1 &5268220088923573432
 GameObject:
   m_ObjectHideFlags: 0

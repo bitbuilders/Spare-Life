@@ -1,16 +1,13 @@
 fileFormatVersion: 2
-guid: 114d26457e757c6419c48eed6856c769
+guid: d37fd50f770d3bc46b8eab7e0b206852
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1667373990114728719
-    second: X0V_0
+      213: -6324960582306061567
+    second: Spare Life BADGUYS_0
   - first:
-      213: -737133637019171885
-    second: X0V_1
-  - first:
-      213: 5781663311886698040
-    second: X0V_2
+      213: -6833084302251282193
+    second: Spare Life BADGUYS_1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -72,7 +69,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -83,7 +80,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -94,7 +91,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -105,7 +102,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +113,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,7 +124,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,43 +134,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: X0V_0
+      name: Spare Life BADGUYS_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 34
-        width: 13
-        height: 26
+        x: 14
+        y: 45
+        width: 12
+        height: 5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3733f47a6199ea44eba5b7d1d8c5295b
-      internalID: 1667373990114728719
+      spriteID: 0f74dbe48d478e24484ee7a983b4d2a0
+      internalID: -6324960582306061567
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: X0V_1
+      name: Spare Life BADGUYS_1
       rect:
         serializedVersion: 2
-        x: 13
-        y: 11
-        width: 12
-        height: 5
+        x: 11
+        y: 3
+        width: 11
+        height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 85fc4e75f4b6e6b4ebf34c2108bca851
-      internalID: -737133637019171885
+      spriteID: 02654362007e45249bc81cdf8d3a28f5
+      internalID: -6833084302251282193
       vertices: []
       indices: 
       edges: []
@@ -181,7 +178,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: a68f2f4dfb05b9441a833876522632c2
+    spriteID: 585d783add0d84f4c998cf4e4344e781
     internalID: 0
     vertices: []
     indices: 

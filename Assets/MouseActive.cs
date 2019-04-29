@@ -14,7 +14,7 @@ public class MouseActive : Singleton<MouseActive>
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             m_CheckTime = 0.0f;
             Active = true;

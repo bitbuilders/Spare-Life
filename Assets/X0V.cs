@@ -9,8 +9,6 @@ public class X0V : Gunner
 {
     [Space(10)]
     [Header("Variables")]
-    [SerializeField] Rigidbody2D m_Rigidbody = null;
-    [SerializeField] PivotAim m_Shoulder = null;
     [SerializeField] [Range(0.0f, 1.0f)] float m_DeadZone = 0.1f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_MinVelocity = 5.0f;
     [Space(10)]
@@ -29,6 +27,7 @@ public class X0V : Gunner
     [Header("Dash")]
     [SerializeField] [Range(0.0f, 100.0f)] float m_DashStrength = 20.0f;
     [SerializeField] [Range(0.0f, 5.0f)] float m_DashDuration = 0.7f;
+    [SerializeField] [Range(0.0f, 10.0f)] float m_DashCooldown = 2.5f;
     [Space(10)]
     [Header("Flip")]
     [SerializeField] FlipTrigger m_FlipTrigger = null;
@@ -43,18 +42,23 @@ public class X0V : Gunner
     float m_StartingJump;
     float m_StartingDash;
     float m_FireTime;
+    float m_DashCooldownTime;
 
-    private void Start()
+    new private void Start()
     {
+        base.Start();
         m_Debuffs = new List<Debuff>();
         m_DashTime = m_DashDuration;
         m_StartingSpeed = m_MaxSpeed;
         m_StartingJump = m_JumpForce;
         m_StartingDash = m_DashStrength;
+        m_DashCooldownTime = m_DashCooldown;
     }
 
     new void Update()
     {
+        if (Dying) return;
+
         base.Update();
 
         float inX = Input.GetAxis("Horizontal");
@@ -81,8 +85,10 @@ public class X0V : Gunner
 
         // Will override jump if used
         m_DashTime += Time.deltaTime;
-        if (Input.GetButtonDown("Dash"))
+        m_DashCooldownTime += Time.deltaTime;
+        if (m_DashCooldownTime >= m_DashCooldown && Input.GetButtonDown("Dash"))
         {
+            m_DashCooldownTime = 0.0f;
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
             Vector2 dir = new Vector2(x, y).normalized;
@@ -103,6 +109,8 @@ public class X0V : Gunner
     
     void FixedUpdate()
     {
+        if (Dying) return;
+
         float inX = Input.GetAxis("Horizontal");
 
         float speed = inX * m_Acceleration * Time.deltaTime;
@@ -192,5 +200,19 @@ public class X0V : Gunner
                 break;
             }
         }
+    }
+
+    public override void Die()
+    {
+        m_Health = m_MaxHealth;
+        transform.position = m_DeadPoint;
+        SpriteRenderer sp = GetComponent<SpriteRenderer>();
+        Color c = sp.color;
+        c.a = 1.0f;
+        sp.color = c;
+        m_Arm.color = c;
+        transform.rotation = Quaternion.identity;
+        GetComponent<CapsuleCollider2D>().enabled = true;
+        Dying = false;
     }
 }

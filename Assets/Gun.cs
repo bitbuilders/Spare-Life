@@ -6,6 +6,8 @@ public class Gun : MonoBehaviour
     [SerializeField] Sprite m_BulletSprite = null;
     [SerializeField] GameObject m_BulletTemplate = null;
     [SerializeField] Transform m_Barrel = null;
+    [SerializeField] ParticleSystem m_FireEffect = null;
+    [SerializeField] bool m_Evil = false;
     [SerializeField] [Range(0, 100)] int m_PoolSize = 20;
     [SerializeField] [Range(0.0f, 100.0f)] float m_LaunchSpeed = 20.0f;
     [SerializeField] [Range(0.0f, 5.0f)] float m_FireRate = 0.5f;
@@ -17,6 +19,7 @@ public class Gun : MonoBehaviour
     public float Kick { get { return m_Kick; } }
     public float Recoil { get { return m_Recoil; } }
     public float FireRate { get { return m_FireRate; } }
+    public bool Friendly { get { return !m_Evil; } }
 
     GameObject[] m_BulletPool;
 
@@ -39,7 +42,9 @@ public class Gun : MonoBehaviour
             Bullet b = bullet.GetComponent<Bullet>();
             Vector3 dir = transform.right * Mathf.Sign(transform.lossyScale.x);
             b.transform.position = m_Barrel.position;
-            b.Init(dir, m_LaunchSpeed);
+            b.Init(dir, m_LaunchSpeed, Friendly);
+
+            if (m_FireEffect) m_FireEffect.Play(true);
         }
     }
 

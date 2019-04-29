@@ -104,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 1667373990114728719, guid: 114d26457e757c6419c48eed6856c769,
+  m_Sprite: {fileID: -1598549177130071464, guid: b7f9166f1720c63478489a745eb816f8,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -165,24 +165,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630693ee0cbd90542ad843688a243507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Rigidbody: {fileID: 4054460444907152137}
   m_Comrade: {fileID: 0}
   m_Gun: {fileID: 144039221718244528}
   m_SacrificeIcons: {fileID: 0}
   m_TradeIcons: {fileID: 0}
+  m_Arm: {fileID: 4054460445303024644}
   m_HoldPoint: {fileID: 4054460446120834675}
   m_Trader: 0
+  m_Evil: 0
+  m_GunOrderInLayer: 51
   m_TradeDistance: 2
+  m_Health: 100
+  m_DeathTime: 0.75
   m_Debuff:
     m_Type: 0
     m_Value: 0
-  m_Rigidbody: {fileID: 4054460444907152137}
+  m_BlinkTime: 0.5
+  m_BlinkSpeed: 1
+  m_MinBlink: 1
+  m_MaxBlink: 1.5
+  m_TradeOverride: 0.7
   m_Shoulder: {fileID: 684705063}
   m_DeadZone: 0.1
   m_MinVelocity: 5
   m_MaxSpeed: 8
   m_Acceleration: 700
   m_MaxAcceleration: 50
-  m_Deceleration: 870
+  m_Deceleration: 400
   m_JumpForce: 23
   m_GroundTouchRadius: 0.35
   m_Feet: {fileID: 987270754}
@@ -221,7 +231,7 @@ MonoBehaviour:
   m_Rigidbody: {fileID: 4054460444907152137}
   m_UpForce: 4
   m_DownForce: 6
-  m_VelocityThreshold: 0.1
+  m_VelocityThreshold: 0.2
 --- !u!1 &4054460445217623704
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +280,6 @@ MonoBehaviour:
   m_ControllerAimSpeed: 450
   m_AngleMin: -90
   m_AngleMax: 90
-  m_DeadZone: 0.01
   m_KickCurve:
     serializedVersion: 2
     m_Curve:
@@ -364,8 +373,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 51
-  m_Sprite: {fileID: -737133637019171885, guid: 114d26457e757c6419c48eed6856c769,
+  m_SortingOrder: 52
+  m_Sprite: {fileID: 7116911285552416569, guid: b7f9166f1720c63478489a745eb816f8,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

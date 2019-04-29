@@ -6,8 +6,6 @@ public class Robot : Gunner
 {
     [Space(10)]
     [Header("Variables")]
-    [SerializeField] Rigidbody2D m_Rigidbody = null;
-    [SerializeField] PivotAim m_Shoulder = null;
     [SerializeField] [Range(0.0f, 100.0f)] float m_MinVelocity = 5.0f;
     [Space(10)]
     [Header("Speed")]
@@ -24,13 +22,23 @@ public class Robot : Gunner
     [Space(10)]
     [Header("Flip")]
     [SerializeField] FlipTrigger m_FlipTrigger = null;
+    [Space(10)]
+    [Header("AI")]
+    [SerializeField] [Range(0.0f, 100.0f)] float m_MaxDistance = 5.0f;
+    [SerializeField] [Range(0.0f, 100.0f)] float m_VisionRadius = 5.0f;
 
-    Vector2 m_Velocity;
-    Vector2 m_Dir;
+    Gunner m_ABSOLUTE_THREAT = null;
+    Vector2 m_Velocity = Vector2.zero;
+    Vector2 m_Dir = Vector2.zero;
     float m_FlipThreshold = 0.05f;
+    float m_ShootTime = 0.0f;
+    bool m_Moving = false;
+    bool m_CanSee = false;
 
     new void Update()
     {
+        if (Dying) return;
+
         base.Update();
 
         if (Mathf.Abs(m_Dir.x) > m_FlipThreshold)
@@ -50,16 +58,57 @@ public class Robot : Gunner
         // Jump
 
         // Shoot
+        if (!m_Comrade) return;
 
+        m_ShootTime += Time.deltaTime;
+        m_ShootTime = Mathf.Clamp(m_ShootTime, 0.0f, m_Gun.FireRate);
+
+        m_Moving = false;
+        m_Dir = Vector2.zero;
+        m_ABSOLUTE_THREAT = GetClosestFoe();
+        if (m_ABSOLUTE_THREAT)
+        {
+            Vector2 dir = m_ABSOLUTE_THREAT.transform.position - transform.position;
+            float sqrDist = dir.sqrMagnitude;
+            if (sqrDist <= m_VisionRadius * m_VisionRadius)
+            {
+                m_CanSee = CanSeeThreat();
+                if (m_CanSee)
+                {
+                    m_Dir = dir.normalized;
+
+                    if (sqrDist > m_MaxDistance * m_MaxDistance) m_Moving = true;
+
+                    m_Shoulder.Target = m_ABSOLUTE_THREAT.transform.position;
+
+                    if (m_ShootTime >= m_Gun.FireRate)
+                    {
+                        m_ShootTime -= m_Gun.FireRate;
+                        m_Gun.Fire();
+                    }
+                }
+            }
+        }
+        else
+        {
+            m_Shoulder.Target = transform.position + transform.right * 2.0f;
+        }
     }
 
     private void FixedUpdate()
     {
-        float speed = m_Dir.x * m_Acceleration * Time.deltaTime;
-        float xSpeed = Mathf.Abs(m_Velocity.x);
+        if (Dying) return;
 
-        m_Velocity.x += speed;
-        m_Velocity.x = Mathf.Clamp(m_Velocity.x, -m_MaxAcceleration, m_MaxAcceleration);
+        float xSpeed = 0.0f;
+
+        if (m_Moving)
+        {
+            float speed = m_Dir.x * m_Acceleration * Time.deltaTime;
+            xSpeed = Mathf.Abs(m_Velocity.x);
+
+            m_Velocity.x += speed;
+            m_Velocity.x = Mathf.Clamp(m_Velocity.x, -m_MaxAcceleration, m_MaxAcceleration);
+        }
 
         if (Mathf.Abs(m_Dir.x) > m_MinVelocity)
         {
@@ -82,5 +131,49 @@ public class Robot : Gunner
         float x = m_Rigidbody.velocity.x * axisToKeep.x;
         float y = m_Rigidbody.velocity.y * axisToKeep.y;
         m_Rigidbody.velocity = new Vector2(x, y);
+    }
+
+    Gunner GetClosestFoe()
+    {
+        Gunner closest = null;
+
+        float dist = float.MaxValue;
+        foreach (Gunner gunner in GunnerLodge.Instance.Gunners)
+        {
+            if (!gunner.Friendly && !gunner.Dying)
+            {
+                Vector2 dir = gunner.transform.position - transform.position;
+                float sqrDist = dir.sqrMagnitude;
+                if (sqrDist < dist)
+                {
+                    dist = sqrDist;
+                    closest = gunner;
+                }
+            }
+        }
+
+        return closest;
+    }
+
+    bool CanSeeThreat()
+    {
+        bool canSee = false;
+        Vector2 dir = m_ABSOLUTE_THREAT.transform.position - transform.position;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, m_VisionRadius, m_GroundLayer);
+        if (!hit.collider)
+        {
+            // Hit nothing!
+            canSee = true;
+        }
+        else
+        {
+            if (hit.collider.gameObject == m_ABSOLUTE_THREAT.gameObject)
+            {
+                canSee = true;
+            }
+        }
+
+        return canSee;
     }
 }
