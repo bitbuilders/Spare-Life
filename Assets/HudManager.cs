@@ -55,6 +55,7 @@ public class HudManager : Singleton<HudManager>
     GameObject CreateIcon(Sprite sprite)
     {
         GameObject go = Instantiate(m_IconTemplate, m_Canvas);
+        go.transform.SetSiblingIndex(1);
         go.GetComponent<Icon>().SetMain(sprite);
 
         return go;

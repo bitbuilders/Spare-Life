@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4818239109257528060}
   - component: {fileID: 4938019022273902004}
   - component: {fileID: 4818239109257528062}
+  - component: {fileID: 9044752959747485459}
   m_Layer: 11
   m_Name: Goon
   m_TagString: Untagged
@@ -136,10 +137,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 4818239109257528060}
+  m_AudioSource: {fileID: 9044752959747485459}
+  m_TradeClip: {fileID: 0}
+  m_HitClip: {fileID: 8300000, guid: 95be1f6a41093c448908ca302c15fdb0, type: 3}
   m_Comrade: {fileID: 0}
   m_Gun: {fileID: 6349260791504542847}
   m_SacrificeIcons: {fileID: 0}
   m_TradeIcons: {fileID: 0}
+  m_Shoulder: {fileID: 8834238079275328722}
   m_Arm: {fileID: 4818239109934353905}
   m_HoldPoint: {fileID: 4818239110198581126}
   m_Trader: 0
@@ -156,7 +161,6 @@ MonoBehaviour:
   m_MinBlink: 0
   m_MaxBlink: 0
   m_TradeOverride: 0
-  m_Shoulder: {fileID: 8834238079275328722}
   m_MinVelocity: 5
   m_MaxSpeed: 4
   m_Acceleration: 700
@@ -201,6 +205,102 @@ MonoBehaviour:
   m_UpForce: 4
   m_DownForce: 6
   m_VelocityThreshold: 0.2
+--- !u!82 &9044752959747485459
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4818239109257528056}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 95be1f6a41093c448908ca302c15fdb0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4818239109853163373
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,7 +539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1430363570, guid: 42437ae08a396db4c8eecb1b0c9db4f7, type: 3}
       propertyPath: m_FireRate
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 4160178868816385806, guid: 42437ae08a396db4c8eecb1b0c9db4f7,
         type: 3}
@@ -496,17 +596,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2109953453696340534, guid: 42437ae08a396db4c8eecb1b0c9db4f7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4160178868847163680, guid: 42437ae08a396db4c8eecb1b0c9db4f7,
         type: 3}
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4160178869228759793, guid: 42437ae08a396db4c8eecb1b0c9db4f7,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2109953453696340534, guid: 42437ae08a396db4c8eecb1b0c9db4f7,
         type: 3}
       propertyPath: m_Layer
       value: 11

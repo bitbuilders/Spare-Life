@@ -4919,8 +4919,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 3552241579026899947}
   m_Lifetime: 2
-  m_Damage: 10
-  m_Knockback: 4
+  m_Damage: 35
+  m_Knockback: 10
   m_BuildUpTime: 0
   m_BuildUpCurve:
     serializedVersion: 2

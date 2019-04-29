@@ -9,6 +9,7 @@ public class X0V : Gunner
 {
     [Space(10)]
     [Header("Variables")]
+    [SerializeField] AudioSource m_XOVSource = null;
     [SerializeField] [Range(0.0f, 1.0f)] float m_DeadZone = 0.1f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_MinVelocity = 5.0f;
     [Space(10)]
@@ -23,11 +24,13 @@ public class X0V : Gunner
     [SerializeField] [Range(0.0f, 5.0f)] float m_GroundTouchRadius = 0.35f;
     [SerializeField] Transform m_Feet = null;
     [SerializeField] LayerMask m_GroundLayer = 0;
+    [SerializeField] AudioClip m_LandSound = null;
     [Space(10)]
     [Header("Dash")]
     [SerializeField] [Range(0.0f, 100.0f)] float m_DashStrength = 20.0f;
     [SerializeField] [Range(0.0f, 5.0f)] float m_DashDuration = 0.7f;
     [SerializeField] [Range(0.0f, 10.0f)] float m_DashCooldown = 2.5f;
+    [SerializeField] AudioClip m_DashSound = null;
     [Space(10)]
     [Header("Flip")]
     [SerializeField] FlipTrigger m_FlipTrigger = null;
@@ -74,8 +77,15 @@ public class X0V : Gunner
             if (prevScale != transform.localScale) m_FlipTrigger.Invoke();
         }
 
+        bool wasOnLastFrame = OnGround;
         Collider2D collided = Physics2D.OverlapCircle(m_Feet.transform.position, m_GroundTouchRadius, m_GroundLayer);
         OnGround = collided;
+
+        if (!wasOnLastFrame && OnGround && Mathf.Abs(m_Rigidbody.velocity.y) > 8.0f && !Dashing)
+        {
+            m_XOVSource.volume = 0.5f;
+            PlaySound(m_LandSound);
+        }
 
         if (OnGround && Input.GetButtonDown("Jump"))
         {
@@ -95,6 +105,9 @@ public class X0V : Gunner
             ResetVelocity(Vector2.zero);
             m_Rigidbody.AddForce(dir * m_DashStrength, ForceMode2D.Impulse);
             m_DashTime = 0.0f;
+
+            m_XOVSource.volume = 1.75f;
+            PlaySound(m_DashSound);
         }
 
         m_FireTime += Time.deltaTime;
@@ -214,5 +227,11 @@ public class X0V : Gunner
         transform.rotation = Quaternion.identity;
         GetComponent<CapsuleCollider2D>().enabled = true;
         Dying = false;
+    }
+
+    void PlaySound(AudioClip sound)
+    {
+        m_XOVSource.clip = sound;
+        m_XOVSource.Play();
     }
 }

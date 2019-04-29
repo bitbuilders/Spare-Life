@@ -5,6 +5,7 @@ public class Gun : MonoBehaviour
     [Header("Generic Gun")]
     [SerializeField] Sprite m_BulletSprite = null;
     [SerializeField] GameObject m_BulletTemplate = null;
+    [SerializeField] AudioSource m_AudioSource;
     [SerializeField] Transform m_Barrel = null;
     [SerializeField] ParticleSystem m_FireEffect = null;
     [SerializeField] bool m_Evil = false;
@@ -45,6 +46,7 @@ public class Gun : MonoBehaviour
             b.Init(dir, m_LaunchSpeed, Friendly);
 
             if (m_FireEffect) m_FireEffect.Play(true);
+            m_AudioSource.Play();
         }
     }
 

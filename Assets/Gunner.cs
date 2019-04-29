@@ -5,6 +5,10 @@ public abstract class Gunner : MonoBehaviour
 {
     [Header("Gunner")]
     [SerializeField] public Rigidbody2D m_Rigidbody;
+    [SerializeField] AudioSource m_AudioSource = null;
+    [SerializeField] AudioClip m_TradeClip = null;
+    [SerializeField] AudioClip m_SacrificeClip = null;
+    [SerializeField] AudioClip m_HitClip = null;
     [SerializeField] protected X0V m_Comrade = null;
     [SerializeField] protected Gun m_Gun = null;
     [SerializeField] GameObject m_SacrificeIcons = null;
@@ -75,6 +79,8 @@ public abstract class Gunner : MonoBehaviour
                     HudManager.Instance.CreateDebuffIcon(m_Debuff.Type.ToString());
                     m_TradeIcons.SetActive(true);
                     m_SacrificeIcons.SetActive(false);
+
+                    PlaySound(m_SacrificeClip, 1.5f);
                 }
             }
             else
@@ -92,6 +98,8 @@ public abstract class Gunner : MonoBehaviour
                 if (Input.GetButtonDown("Trade"))
                 {
                     Trade(m_Comrade);
+
+                    PlaySound(m_TradeClip, 1.5f, .8f);
                 }
 
                 CalculateTime(true, m_TradeIcons, m_TradeOverride);
@@ -158,6 +166,7 @@ public abstract class Gunner : MonoBehaviour
         m_Health -= destruction;
         m_Rigidbody.velocity = Vector2.zero;
         m_Rigidbody.AddForce(force, ForceMode2D.Impulse);
+        PlaySound(m_HitClip, 0.7f);
 
         if (Dead)
         {
@@ -204,5 +213,13 @@ public abstract class Gunner : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    void PlaySound(AudioClip sound, float volume, float pitch = 1.0f)
+    {
+        m_AudioSource.pitch = pitch;
+        m_AudioSource.volume = volume;
+        m_AudioSource.clip = sound;
+        m_AudioSource.Play();
     }
 }
