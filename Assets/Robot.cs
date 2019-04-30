@@ -26,6 +26,8 @@ public class Robot : Gunner
     [Header("AI")]
     [SerializeField] [Range(0.0f, 100.0f)] float m_MaxDistance = 5.0f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_VisionRadius = 5.0f;
+    [SerializeField] [Range(0.0f, 100.0f)] float m_PlayerDistance = 5.0f;
+    [SerializeField] [Range(0.0f, 100.0f)] float m_PanicDistance = 5.0f;
 
     Gunner m_ABSOLUTE_THREAT = null;
     Vector2 m_Velocity = Vector2.zero;
@@ -65,6 +67,37 @@ public class Robot : Gunner
 
         m_Moving = false;
         m_Dir = Vector2.zero;
+
+        float sign = Mathf.Sign(transform.lossyScale.x);
+        m_Shoulder.Target = (Vector2)transform.position + Vector2.right * 2.0f * sign;
+
+        Vector2 comDir = m_Comrade.transform.position - transform.position;
+        float comDist = comDir.sqrMagnitude;
+        if (comDist > m_PlayerDistance * m_PlayerDistance)
+        {
+            m_Moving = true;
+
+            m_Dir = comDir.normalized;
+            
+            if (WallInDirection(m_Dir, 2.0f) || comDist > m_PanicDistance * m_PanicDistance)
+            {
+                if (WallInDirection(Vector2.up, 3.5f))
+                {
+                    m_Dir = Vector2.left;
+                }
+                else
+                {
+                    if (OnGround)
+                    {
+                        ResetVelocity(Vector2.right);
+                        Jump();
+                    }
+                }
+            }
+
+            return;
+        }
+
         m_ABSOLUTE_THREAT = GetClosestFoe();
         if (m_ABSOLUTE_THREAT)
         {
@@ -175,5 +208,46 @@ public class Robot : Gunner
         }
 
         return canSee;
+    }
+
+    bool CanSeeComrade()
+    {
+        bool canSee = false;
+        Vector2 dir = m_Comrade.transform.position - transform.position;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.up * 0.25f, dir, dir.magnitude, m_GroundLayer);
+        if (!hit.collider)
+        {
+            // Hit nothing!
+            canSee = true;
+        }
+        else
+        {
+            if (hit.collider.gameObject == m_Comrade.gameObject)
+            {
+                canSee = true;
+            }
+        }
+
+        return canSee;
+    }
+
+    bool WallInDirection(Vector2 dir, float dist)
+    {
+        bool wallThere = false;
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dist, m_GroundLayer);
+        if (hit.collider)
+        {
+            // Hit nothing!
+            wallThere = true;
+        }
+
+        return wallThere;
+    }
+
+    void Jump()
+    {
+        m_Rigidbody.AddForce(Vector2.up * m_JumpForce, ForceMode2D.Impulse);
     }
 }

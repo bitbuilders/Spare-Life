@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,7 @@ public class X0V : Gunner
     [SerializeField] [Range(0.0f, 5.0f)] float m_DashDuration = 0.7f;
     [SerializeField] [Range(0.0f, 10.0f)] float m_DashCooldown = 2.5f;
     [SerializeField] AudioClip m_DashSound = null;
+    [SerializeField] TrailRenderer m_DashTrail = null;
     [Space(10)]
     [Header("Flip")]
     [SerializeField] FlipTrigger m_FlipTrigger = null;
@@ -56,6 +58,7 @@ public class X0V : Gunner
         m_StartingJump = m_JumpForce;
         m_StartingDash = m_DashStrength;
         m_DashCooldownTime = m_DashCooldown;
+        m_DashTrail.emitting = false;
     }
 
     new void Update()
@@ -108,6 +111,7 @@ public class X0V : Gunner
 
             m_XOVSource.volume = 1.75f;
             PlaySound(m_DashSound);
+            StartCoroutine(DashEffect(0.2f));
         }
 
         m_FireTime += Time.deltaTime;
@@ -233,5 +237,12 @@ public class X0V : Gunner
     {
         m_XOVSource.clip = sound;
         m_XOVSource.Play();
+    }
+
+    IEnumerator DashEffect(float endBuffer)
+    {
+        m_DashTrail.emitting = true;
+        yield return new WaitForSeconds(m_DashDuration);
+        m_DashTrail.emitting = false;
     }
 }

@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Evil: 0
   m_GunOrderInLayer: 11
   m_TradeDistance: 2
-  m_Health: 100
+  m_Health: 200
   m_DeathTime: 0.75
   m_Debuff:
     m_Type: 1
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_MaxBlink: 1.5
   m_TradeOverride: 0.7
   m_MinVelocity: 5
-  m_MaxSpeed: 4
+  m_MaxSpeed: 7
   m_Acceleration: 700
   m_MaxAcceleration: 50
   m_Deceleration: 870
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Feet: {fileID: 8834238079041023895}
   m_GroundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   m_FlipTrigger:
     m_PersistentCalls:
       m_Calls:
@@ -191,6 +191,8 @@ MonoBehaviour:
     m_TypeName: FlipTrigger, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   m_MaxDistance: 7
   m_VisionRadius: 9
+  m_PlayerDistance: 8
+  m_PanicDistance: 14
 --- !u!114 &4818239109257528062
 MonoBehaviour:
   m_ObjectHideFlags: 0
